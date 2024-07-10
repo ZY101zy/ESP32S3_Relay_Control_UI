@@ -26,7 +26,7 @@ void relay_control_init()
     //enable pull-up mode
     io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
     //configure GPIO with the given settings
-    gpio_config(&io_conf);
+    gpio_config  (&io_conf);
     gpio_set_level(RELAY_CTRL_PIN, RELAY_OFF);
 
 }
