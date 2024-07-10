@@ -99,7 +99,6 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_clear_flag(ui_ScreenHome_Textarea_TextAreaOnTime, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
 
-
     ui_ScreenHome_Container_ContainerOffTime = lv_obj_create(ui_ScreenHome_Container_ContainerTimeSetting);
     lv_obj_remove_style_all(ui_ScreenHome_Container_ContainerOffTime);
     lv_obj_set_width(ui_ScreenHome_Container_ContainerOffTime, 269);
@@ -168,6 +167,10 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_set_x(ui_ScreenHome_Keyboard_KeyboardInput, -426);
     lv_obj_set_y(ui_ScreenHome_Keyboard_KeyboardInput, 59);
     lv_obj_set_align(ui_ScreenHome_Keyboard_KeyboardInput, LV_ALIGN_CENTER);
+
+
+
+
 
     ui_ScreenHome_Button_ButtonController = lv_btn_create(ui_ScreenHome_Container_ContainerController);
     lv_obj_set_width(ui_ScreenHome_Button_ButtonController, 708);
