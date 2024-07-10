@@ -1,0 +1,8 @@
+description: ESP-BSP SquareLine LVGL Example
+targets:
+    - esp32s3
+dependencies:
+  idf: ">=4.4"
+  lvgl/lvgl: "==8.3.11"
+  esp32_s3_lcd_ev_board: "2.1.*"
+  esp_codec_dev: "==1.1.0"
