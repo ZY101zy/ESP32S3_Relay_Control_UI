@@ -3,29 +3,42 @@
  *
  * SPDX-License-Identifier: CC0-1.0
  */
-/*
- * @Author: ZY101zy zhouyi@espressif.com
- * @Date: 2024-07-10 16:00:30
- * @LastEditors: ZY101zy zhouyi@espressif.com
- * @LastEditTime: 2024-07-11 10:26:07
- * @FilePath: /relay_control/main/app/lvgl_widget_app.h
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 
-#ifndef __LVGL_WIDGET__APP__H__
-#define __LVGL_WIDGET__APP__H__
+#ifndef __LVGL_WIDGET_APP_H__
+#define __LVGL_WIDGET_APP_H__
 
 #include <stdlib.h>
 #include "ui/ui.h"
 #include "main.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
- * widget event callback
+ * @brief   Add event callback and initialization styles
+ *
  */
 void widget_event_init();
+
+/**
+ * @brief   Relay on indicator light style
+ *
+ * @param   on_time_status light on or not
+ */
 void relay_on_time_light(uint8_t on_time_status);
+
+/**
+ * @brief   Relay off indicator light style
+ *
+ * @param   off_time_status light on or not
+ */
 void relay_off_time_light(uint8_t off_time_status);
 
 
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* __LVGL_WIDGET_APP_H__ */
