@@ -7,7 +7,7 @@
  * @Author: ZY101zy zhouyi@espressif.com
  * @Date: 2024-07-10 15:59:51
  * @LastEditors: ZY101zy zhouyi@espressif.com
- * @LastEditTime: 2024-07-10 18:58:27
+ * @LastEditTime: 2024-07-11 10:36:34
  * @FilePath: /relay_control/main/app/lvgl_widget_app.c
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -44,19 +44,24 @@ static void text_aera_event_cb(lv_event_t *e)
     else if (code == LV_EVENT_READY) { // keyboard input over
         const char *text_on = lv_textarea_get_text(ui_ScreenHome_Textarea_TextAreaOnTime);
         const char *text_off = lv_textarea_get_text(ui_ScreenHome_Textarea_TextAreaOffTime);
+        // ESP_LOGI(TAG, "Relay on txt: %s", text_on);
+        // ESP_LOGI(TAG, "Relay off txt: %s", text_off);
 
         char *endptr_on;
         char *endptr_off;
 
-        uint32_t number_on = (uint32_t)strtol(ui_ScreenHome_Textarea_TextAreaOnTime, &endptr_on, 10);
-        uint32_t number_off = (uint32_t)strtol(ui_ScreenHome_Textarea_TextAreaOffTime, &endptr_off, 10);
-
+        uint32_t number_on = strtoul(text_on, &endptr_on, 10);
+        uint32_t number_off = strtoul(text_off, &endptr_off, 10);
+        // ESP_LOGI(TAG, "Relay on time set: %d ms", number_on);
+        // ESP_LOGI(TAG, "Relay off time set: %d ms", number_off);
+        // ESP_LOGI(TAG, "Relay on endptr_on: %c", *endptr_on);
+        // ESP_LOGI(TAG, "Relay off endptr_off: %c", *endptr_off);
 
         if (endptr_on == text_on) { // text_aera is empty
             relay_on_time = 0;
             ESP_LOGI(TAG, "Relay on time set: %d ms", relay_on_time);
         } else if (*endptr_on != '\0') {
-            ESP_LOGI(TAG, "Input format is error!!! \r\n");
+            ESP_LOGI(TAG, "Relay on input format is error!!! \r\n");
             relay_on_time = 0;
         } else {
             relay_on_time = number_on;
@@ -67,12 +72,13 @@ static void text_aera_event_cb(lv_event_t *e)
             relay_off_time = 0;
             ESP_LOGI(TAG, "Relay off time set: %d ms", relay_off_time);
         } else if (*endptr_off != '\0') {
-            ESP_LOGI(TAG, "Input format is error!!! \r\n");
+            ESP_LOGI(TAG, "Relay off input format is error!!! \r\n");
             relay_off_time = 0;
         } else {
             relay_off_time = number_off;
             ESP_LOGI(TAG, "Relay off time set: %d ms", relay_off_time);
         }
+
     }
 }
 

@@ -7,7 +7,7 @@
  * @Author: ZY101zy zhouyi@espressif.com
  * @Date: 2024-07-10 16:00:30
  * @LastEditors: ZY101zy zhouyi@espressif.com
- * @LastEditTime: 2024-07-10 18:57:21
+ * @LastEditTime: 2024-07-11 10:26:07
  * @FilePath: /relay_control/main/app/lvgl_widget_app.h
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -15,6 +15,7 @@
 #ifndef __LVGL_WIDGET__APP__H__
 #define __LVGL_WIDGET__APP__H__
 
+#include <stdlib.h>
 #include "ui/ui.h"
 #include "main.h"
 
