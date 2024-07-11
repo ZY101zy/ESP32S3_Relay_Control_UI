@@ -30,15 +30,15 @@ void ui_ScreenHome_screen_init(void)
     ui_ScreenHome_Label_LabelSysName = lv_label_create(ui_ScreenHome_Container_ContainerSysName);
     lv_obj_set_width(ui_ScreenHome_Label_LabelSysName, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_ScreenHome_Label_LabelSysName, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_ScreenHome_Label_LabelSysName, -168);
-    lv_obj_set_y(ui_ScreenHome_Label_LabelSysName, -208);
+    lv_obj_set_x(ui_ScreenHome_Label_LabelSysName, -216);
+    lv_obj_set_y(ui_ScreenHome_Label_LabelSysName, -207);
     lv_obj_set_align(ui_ScreenHome_Label_LabelSysName, LV_ALIGN_CENTER);
     lv_label_set_text(ui_ScreenHome_Label_LabelSysName, "Relay Control Panel");
     lv_obj_set_style_text_font(ui_ScreenHome_Label_LabelSysName, &lv_font_montserrat_38, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ScreenHome_Container_ContainerTimeSetting = lv_obj_create(ui_ScreenHome);
     lv_obj_remove_style_all(ui_ScreenHome_Container_ContainerTimeSetting);
-    lv_obj_set_width(ui_ScreenHome_Container_ContainerTimeSetting, 714);
+    lv_obj_set_width(ui_ScreenHome_Container_ContainerTimeSetting, 748);
     lv_obj_set_height(ui_ScreenHome_Container_ContainerTimeSetting, 50);
     lv_obj_set_x(ui_ScreenHome_Container_ContainerTimeSetting, -3);
     lv_obj_set_y(ui_ScreenHome_Container_ContainerTimeSetting, -140);
@@ -49,12 +49,12 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_clear_flag(ui_ScreenHome_Container_ContainerTimeSetting,
                       LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_pad_row(ui_ScreenHome_Container_ContainerTimeSetting, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_pad_column(ui_ScreenHome_Container_ContainerTimeSetting, 100, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_pad_column(ui_ScreenHome_Container_ContainerTimeSetting, 40, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ScreenHome_Container_ContainerONTime = lv_obj_create(ui_ScreenHome_Container_ContainerTimeSetting);
     lv_obj_remove_style_all(ui_ScreenHome_Container_ContainerONTime);
-    lv_obj_set_width(ui_ScreenHome_Container_ContainerONTime, 269);
-    lv_obj_set_height(ui_ScreenHome_Container_ContainerONTime, 50);
+    lv_obj_set_width(ui_ScreenHome_Container_ContainerONTime, 365);
+    lv_obj_set_height(ui_ScreenHome_Container_ContainerONTime, 85);
     lv_obj_set_x(ui_ScreenHome_Container_ContainerONTime, -116);
     lv_obj_set_y(ui_ScreenHome_Container_ContainerONTime, -94);
     lv_obj_set_align(ui_ScreenHome_Container_ContainerONTime, LV_ALIGN_CENTER);
@@ -88,21 +88,25 @@ void ui_ScreenHome_screen_init(void)
     lv_obj_set_y(ui_ScreenHome_Label_LabelOnTime, -178);
     lv_obj_set_align(ui_ScreenHome_Label_LabelOnTime, LV_ALIGN_CENTER);
     lv_label_set_text(ui_ScreenHome_Label_LabelOnTime, "ON Time (ms)");
+    lv_obj_set_style_text_font(ui_ScreenHome_Label_LabelOnTime, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ScreenHome_Textarea_TextAreaOnTime = lv_textarea_create(ui_ScreenHome_Container_ContainerONTime);
-    lv_obj_set_width(ui_ScreenHome_Textarea_TextAreaOnTime, 125);
-    lv_obj_set_height(ui_ScreenHome_Textarea_TextAreaOnTime, 37);
+    lv_obj_set_width(ui_ScreenHome_Textarea_TextAreaOnTime, 155);
+    lv_obj_set_height(ui_ScreenHome_Textarea_TextAreaOnTime, 45);
     lv_obj_set_x(ui_ScreenHome_Textarea_TextAreaOnTime, -141);
     lv_obj_set_y(ui_ScreenHome_Textarea_TextAreaOnTime, -139);
     lv_obj_set_align(ui_ScreenHome_Textarea_TextAreaOnTime, LV_ALIGN_CENTER);
     lv_textarea_set_placeholder_text(ui_ScreenHome_Textarea_TextAreaOnTime, "Placeholder...");
     lv_obj_clear_flag(ui_ScreenHome_Textarea_TextAreaOnTime, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_text_font(ui_ScreenHome_Textarea_TextAreaOnTime, &lv_font_montserrat_20,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
+
 
 
     ui_ScreenHome_Container_ContainerOffTime = lv_obj_create(ui_ScreenHome_Container_ContainerTimeSetting);
     lv_obj_remove_style_all(ui_ScreenHome_Container_ContainerOffTime);
-    lv_obj_set_width(ui_ScreenHome_Container_ContainerOffTime, 269);
-    lv_obj_set_height(ui_ScreenHome_Container_ContainerOffTime, 50);
+    lv_obj_set_width(ui_ScreenHome_Container_ContainerOffTime, 365);
+    lv_obj_set_height(ui_ScreenHome_Container_ContainerOffTime, 85);
     lv_obj_set_x(ui_ScreenHome_Container_ContainerOffTime, 179);
     lv_obj_set_y(ui_ScreenHome_Container_ContainerOffTime, -140);
     lv_obj_set_align(ui_ScreenHome_Container_ContainerOffTime, LV_ALIGN_CENTER);
@@ -128,20 +132,23 @@ void ui_ScreenHome_screen_init(void)
 
     ui_ScreenHome_Label_LabelOffTime = lv_label_create(ui_ScreenHome_Container_ContainerOffTime);
     lv_obj_set_width(ui_ScreenHome_Label_LabelOffTime, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_ScreenHome_Label_LabelOffTime, LV_SIZE_CONTENT);    /// -18
+    lv_obj_set_height(ui_ScreenHome_Label_LabelOffTime, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_ScreenHome_Label_LabelOffTime, 134);
     lv_obj_set_y(ui_ScreenHome_Label_LabelOffTime, -134);
     lv_obj_set_align(ui_ScreenHome_Label_LabelOffTime, LV_ALIGN_CENTER);
     lv_label_set_text(ui_ScreenHome_Label_LabelOffTime, "OFF Time (ms)");
+    lv_obj_set_style_text_font(ui_ScreenHome_Label_LabelOffTime, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ScreenHome_Textarea_TextAreaOffTime = lv_textarea_create(ui_ScreenHome_Container_ContainerOffTime);
-    lv_obj_set_width(ui_ScreenHome_Textarea_TextAreaOffTime, 125);
-    lv_obj_set_height(ui_ScreenHome_Textarea_TextAreaOffTime, 37);
+    lv_obj_set_width(ui_ScreenHome_Textarea_TextAreaOffTime, 155);
+    lv_obj_set_height(ui_ScreenHome_Textarea_TextAreaOffTime, 45);
     lv_obj_set_x(ui_ScreenHome_Textarea_TextAreaOffTime, 275);
     lv_obj_set_y(ui_ScreenHome_Textarea_TextAreaOffTime, -130);
     lv_obj_set_align(ui_ScreenHome_Textarea_TextAreaOffTime, LV_ALIGN_CENTER);
     lv_textarea_set_placeholder_text(ui_ScreenHome_Textarea_TextAreaOffTime, "Placeholder...");
     lv_obj_clear_flag(ui_ScreenHome_Textarea_TextAreaOffTime, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_text_font(ui_ScreenHome_Textarea_TextAreaOffTime, &lv_font_montserrat_20,
+                               LV_PART_MAIN | LV_STATE_DEFAULT);
 
 
 
@@ -162,18 +169,17 @@ void ui_ScreenHome_screen_init(void)
 
     ui_ScreenHome_Keyboard_KeyboardInput = lv_keyboard_create(ui_ScreenHome_Container_ContainerController);
     lv_keyboard_set_mode(ui_ScreenHome_Keyboard_KeyboardInput, LV_KEYBOARD_MODE_NUMBER);
-    lv_obj_set_width(ui_ScreenHome_Keyboard_KeyboardInput, 726);
+    lv_obj_set_width(ui_ScreenHome_Keyboard_KeyboardInput, 750);
     lv_obj_set_height(ui_ScreenHome_Keyboard_KeyboardInput, 269);
     lv_obj_set_x(ui_ScreenHome_Keyboard_KeyboardInput, -426);
     lv_obj_set_y(ui_ScreenHome_Keyboard_KeyboardInput, 59);
     lv_obj_set_align(ui_ScreenHome_Keyboard_KeyboardInput, LV_ALIGN_CENTER);
 
-
-
-
+    lv_obj_set_style_text_font(ui_ScreenHome_Keyboard_KeyboardInput, &lv_font_montserrat_20,
+                               LV_PART_ITEMS | LV_STATE_DEFAULT);
 
     ui_ScreenHome_Button_ButtonController = lv_btn_create(ui_ScreenHome_Container_ContainerController);
-    lv_obj_set_width(ui_ScreenHome_Button_ButtonController, 708);
+    lv_obj_set_width(ui_ScreenHome_Button_ButtonController, 724);
     lv_obj_set_height(ui_ScreenHome_Button_ButtonController, 67);
     lv_obj_set_x(ui_ScreenHome_Button_ButtonController, -219);
     lv_obj_set_y(ui_ScreenHome_Button_ButtonController, 209);

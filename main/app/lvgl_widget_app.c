@@ -7,7 +7,7 @@
  * @Author: ZY101zy zhouyi@espressif.com
  * @Date: 2024-07-10 15:59:51
  * @LastEditors: ZY101zy zhouyi@espressif.com
- * @LastEditTime: 2024-07-11 10:36:34
+ * @LastEditTime: 2024-07-11 16:17:23
  * @FilePath: /relay_control/main/app/lvgl_widget_app.c
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,7 +25,6 @@ static void controller_button(uint8_t sys_status)
         lv_obj_set_style_bg_color(ui_ScreenHome_Button_ButtonController, lv_color_hex(0xBEBEBE), LV_PART_MAIN);
         lv_label_set_text(control_button_label, "SYSTEM OFF");
     }
-
 }
 
 static void text_aera_event_cb(lv_event_t *e)
@@ -35,7 +34,7 @@ static void text_aera_event_cb(lv_event_t *e)
 
 
     if (code == LV_EVENT_CLICKED || code == LV_EVENT_FOCUSED) {
-        /*Focus on the clicked text area*/
+        /* Focus on the clicked text area */
         if (ui_ScreenHome_Keyboard_KeyboardInput != NULL) {
             lv_keyboard_set_textarea(ui_ScreenHome_Keyboard_KeyboardInput, ta);
         }
@@ -61,7 +60,7 @@ static void text_aera_event_cb(lv_event_t *e)
             relay_on_time = 0;
             ESP_LOGI(TAG, "Relay on time set: %d ms", relay_on_time);
         } else if (*endptr_on != '\0') {
-            ESP_LOGI(TAG, "Relay on input format is error!!! \r\n");
+            ESP_LOGE(TAG, "Relay on input format is error!!!");
             relay_on_time = 0;
         } else {
             relay_on_time = number_on;
@@ -72,7 +71,7 @@ static void text_aera_event_cb(lv_event_t *e)
             relay_off_time = 0;
             ESP_LOGI(TAG, "Relay off time set: %d ms", relay_off_time);
         } else if (*endptr_off != '\0') {
-            ESP_LOGI(TAG, "Relay off input format is error!!! \r\n");
+            ESP_LOGE(TAG, "Relay off input format is error!!!");
             relay_off_time = 0;
         } else {
             relay_off_time = number_off;
@@ -88,9 +87,25 @@ static void control_button_event_cb(lv_event_t *e)
     if (code == LV_EVENT_CLICKED) {
         system_flag = !system_flag;
         if (system_flag) {
-            controller_button(SYSTEM_ON);
+            if (relay_on_time > 0 && relay_off_time > 0) {
+                xTimerChangePeriod(relay_control_timer, (relay_on_time / portTICK_PERIOD_MS), portMAX_DELAY);
+                controller_button(SYSTEM_ON);
+                relay_control(RELAY_ON);
+                relay_on_time_light(STATUS_ON);
+                relay_off_time_light(STATUS_OFF);
+                relay_status = RELAY_STATUS_ON;
+                relay_control_timer_switch(TIMER_STATUS_ON);
+            } else {
+                ESP_LOGI (TAG, "Please input correct time!!!");
+                system_flag = SYSTEM_OFF;
+            }
+
         } else {
             controller_button(SYSTEM_OFF);
+            relay_control_timer_switch(TIMER_STATUS_OFF);
+            relay_control(RELAY_OFF);
+            relay_on_time_light(STATUS_OFF);
+            relay_off_time_light(STATUS_OFF);
         }
     }
 }
@@ -123,12 +138,20 @@ void widget_event_init()
     lv_obj_add_event_cb(ui_ScreenHome_Textarea_TextAreaOffTime, text_aera_event_cb, LV_EVENT_ALL, NULL);
 
     // Button set
+    /**
+     *
+     */
     lv_obj_set_style_bg_color(ui_ScreenHome_Button_ButtonController, lv_color_hex(0xBEBEBE), LV_PART_MAIN);
     lv_obj_add_event_cb(ui_ScreenHome_Button_ButtonController, control_button_event_cb, LV_EVENT_ALL, NULL);
 
+    /**
+     *
+     */
     control_button_label = lv_label_create(ui_ScreenHome_Button_ButtonController);
     lv_style_init(&style_label);
     lv_style_set_text_color(&style_label, lv_color_hex(0x000000));
+    lv_style_set_text_font(&style_label, &lv_font_montserrat_20);
+
     lv_obj_add_style(control_button_label, &style_label, 0);
     lv_label_set_text(control_button_label, "SYSTEM OFF");
     lv_obj_center(control_button_label);
@@ -136,5 +159,4 @@ void widget_event_init()
     // indicator light
     lv_obj_set_style_bg_color(ui_ScreenHome_Panel_PanelOnTimeLed, lv_color_hex(0xBEBEBE), LV_PART_MAIN);
     lv_obj_set_style_bg_color(ui_ScreenHome_Panel_PanelOffTimeLed, lv_color_hex(0xBEBEBE), LV_PART_MAIN);
-
 }

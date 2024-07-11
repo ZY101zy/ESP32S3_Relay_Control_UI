@@ -2,7 +2,7 @@
  * @Author: ZY101zy zhouyi@espressif.com
  * @Date: 2024-07-10 10:15:09
  * @LastEditors: ZY101zy zhouyi@espressif.com
- * @LastEditTime: 2024-07-10 18:56:58
+ * @LastEditTime: 2024-07-11 15:26:25
  * @FilePath: /relay_control/main/main.h
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,8 +16,10 @@
 
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/timers.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
 #include "bsp/esp32_s3_lcd_ev_board.h"
@@ -41,6 +43,21 @@ extern uint32_t relay_on_time;
 extern uint32_t relay_off_time;
 extern uint8_t system_flag;
 
+
+extern uint8_t system_flag;
+/**
+ * @brief relay control Timer
+ */
+extern TimerHandle_t relay_control_timer;
+#define RELAY_STATUS_ON true
+#define RELAY_STATUS_OFF false
+#define RELAY_CONTROL_TIMER_ID 1
+
+#define TIMER_STATUS_ON true
+#define TIMER_STATUS_OFF false
+
+extern bool relay_status;
+extern void relay_control_timer_switch(bool timer_state);
 
 
 void relay_control_init();
