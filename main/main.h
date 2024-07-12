@@ -8,10 +8,6 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/timers.h"
 #include "esp_log.h"
 
 #ifdef __cplusplus
@@ -22,26 +18,30 @@ extern "C" {
 #define TAG "RELAY_CONTROL"
 
 /**
- * @brief Relay and used GPIO definition
- *
- */
-#define RELAY_CTRL_PIN GPIO_NUM_20
-#define RELAY_ON 0
-#define RELAY_OFF 1
-
-/**
  * @brief System running state definition
  */
 #define SYSTEM_ON true
 #define SYSTEM_OFF false
-extern bool system_flag;
+bool get_system_flag();
+void set_system_flag(bool sys_state);
+void toggle_system_flag();
 
 /**
  * @brief relay control Timer
  */
-extern TimerHandle_t relay_control_timer;
-extern uint32_t relay_on_time;
-extern uint32_t relay_off_time;
+void change_timer_period(uint32_t time_ms);
+uint32_t get_relay_on_time();
+uint32_t get_relay_off_time();
+void set_relay_on_time(uint32_t time);
+void set_relay_off_time(uint32_t time);
+
+/**
+ * @brief relay status
+ */
+bool get_relay_status();
+void set_relay_status(bool state);
+void toggle_relay_status();
+
 #define LIGHT_ON true
 #define LIGHT_OFF false
 #define RELAY_STATUS_ON true
@@ -50,7 +50,6 @@ extern uint32_t relay_off_time;
 #define TIMER_STATUS_ON true
 #define TIMER_STATUS_OFF false
 
-extern bool relay_status;
 /**
  * @brief   Switch on/off relay control Timer
  *
@@ -58,21 +57,8 @@ extern bool relay_status;
  */
 void relay_control_timer_switch(bool timer_state);
 
-/**
- * @brief   Relay control GPIO initialization
- */
-void relay_control_init();
-
-/**
- * @brief   Relay control GPIO high and low level
- */
-void relay_control(int value);
-
-
-
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* __MAIN_H__ */

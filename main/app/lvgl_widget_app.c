@@ -5,8 +5,8 @@
  */
 #include <stdio.h>
 #include <stdbool.h>
-
 #include "lvgl_widget_app.h"
+#include "app/relay_control.h"
 
 lv_obj_t *control_button_label;
 static lv_style_t style_label;
@@ -48,25 +48,32 @@ static void text_aera_event_cb(lv_event_t *e)
         // ESP_LOGI(TAG, "Relay off endptr_off: %c", *endptr_off);
 
         if (endptr_on == text_on) { // text_aera is empty
-            relay_on_time = 0;
-            ESP_LOGI(TAG, "Relay on time set: %d ms", relay_on_time);
+            // relay_on_time = 0;
+            set_relay_on_time(0);
+            // ESP_LOGI(TAG, "Relay on time set: %d ms", relay_on_time);
+            ESP_LOGI(TAG, "Relay on time set: %d ms", get_relay_on_time());
         } else if (*endptr_on != '\0') {
             ESP_LOGE(TAG, "Relay on input format is error!!!");
-            relay_on_time = 0;
+            // relay_on_time = 0;
+            set_relay_on_time(0);
         } else {
-            relay_on_time = number_on;
-            ESP_LOGI(TAG, "Relay on time set: %d ms", relay_on_time);
+            // relay_on_time = number_on;
+            set_relay_on_time(number_on);
+            ESP_LOGI(TAG, "Relay on time set: %d ms", get_relay_on_time());
         }
 
         if (endptr_off == text_off) { // text_aera is empty
-            relay_off_time = 0;
-            ESP_LOGI(TAG, "Relay off time set: %d ms", relay_off_time);
+            // relay_off_time = 0;
+            set_relay_off_time(0);
+            ESP_LOGI(TAG, "Relay off time set: %d ms", get_relay_off_time());
         } else if (*endptr_off != '\0') {
             ESP_LOGE(TAG, "Relay off input format is error!!!");
-            relay_off_time = 0;
+            // relay_off_time = 0;
+            set_relay_off_time(0);
         } else {
-            relay_off_time = number_off;
-            ESP_LOGI(TAG, "Relay off time set: %d ms", relay_off_time);
+            // relay_off_time = number_off;
+            set_relay_off_time(number_off);
+            ESP_LOGI(TAG, "Relay off time set: %d ms", get_relay_off_time());
         }
     }
 }
@@ -75,19 +82,19 @@ static void control_button_event_cb(lv_event_t *e)
 {
     lv_event_code_t code = lv_event_get_code(e);
     if (code == LV_EVENT_CLICKED) {
-        system_flag = !system_flag;
-        if (system_flag) {
-            if (relay_on_time > 0 && relay_off_time > 0) {
-                xTimerChangePeriod(relay_control_timer, (relay_on_time / portTICK_PERIOD_MS), portMAX_DELAY);
+        toggle_system_flag();
+        if (get_system_flag()) {
+            if (get_relay_on_time() > 0 && get_relay_off_time() > 0) {
+                change_timer_period(get_relay_on_time());
                 controller_button(SYSTEM_ON);
                 relay_control(RELAY_ON);
                 relay_on_time_light(LIGHT_ON);
                 relay_off_time_light(LIGHT_OFF);
-                relay_status = RELAY_STATUS_ON;
+                set_relay_status(RELAY_STATUS_ON);
                 relay_control_timer_switch(TIMER_STATUS_ON);
             } else {
                 ESP_LOGI (TAG, "Please input correct time!!!");
-                system_flag = SYSTEM_OFF;
+                set_system_flag(SYSTEM_OFF);
             }
         } else {
             controller_button(SYSTEM_OFF);

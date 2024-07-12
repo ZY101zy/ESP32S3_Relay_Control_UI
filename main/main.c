@@ -21,28 +21,85 @@
 #include "lvgl.h"
 #include "ui/ui.h"
 #include "app/lvgl_widget_app.h"
+#include "app/relay_control.h"
 #include "main.h"
 
 
 uint32_t relay_on_time = 0;
 uint32_t relay_off_time = 0;
 
+uint32_t get_relay_on_time()
+{
+    return relay_on_time;
+}
+
+uint32_t get_relay_off_time()
+{
+    return relay_off_time;
+}
+
+void set_relay_on_time(uint32_t time)
+{
+    relay_on_time = time;
+}
+
+void set_relay_off_time(uint32_t time)
+{
+    relay_off_time = time;
+}
+
+
 bool system_flag = SYSTEM_OFF;
 
-TimerHandle_t relay_control_timer;
+bool get_system_flag()
+{
+    return system_flag;
+}
+
+void set_system_flag(bool sys_state)
+{
+    system_flag = sys_state;
+}
+
+void toggle_system_flag()
+{
+    system_flag = !system_flag;
+}
+
 bool relay_status = RELAY_STATUS_OFF;
+
+bool get_relay_status()
+{
+    return relay_status;
+}
+
+void set_relay_status(bool state)
+{
+    relay_status = state;
+}
+
+void toggle_relay_status()
+{
+    relay_status = !relay_status;
+}
+
+TimerHandle_t relay_control_timer;
+void change_timer_period(uint32_t time_ms)
+{
+    xTimerChangePeriod(relay_control_timer, (time_ms / portTICK_PERIOD_MS), portMAX_DELAY);
+}
 
 static void relay_control_timer_callback(TimerHandle_t timer)
 {
-    if (relay_on_time > 0 && relay_off_time > 0) {
-        relay_status = !relay_status;
-        if (relay_status == RELAY_STATUS_ON) {
-            xTimerChangePeriod(relay_control_timer, (relay_on_time / portTICK_PERIOD_MS), portMAX_DELAY);
+    if (get_relay_on_time() > 0 && get_relay_off_time() > 0) {
+        toggle_relay_status();
+        if (get_relay_status() == RELAY_STATUS_ON) {
+            change_timer_period(get_relay_on_time());
             relay_control(RELAY_ON);
             relay_on_time_light(LIGHT_ON);
             relay_off_time_light(LIGHT_OFF);
         } else {
-            xTimerChangePeriod(relay_control_timer, (relay_off_time / portTICK_PERIOD_MS), portMAX_DELAY);
+            change_timer_period(get_relay_off_time());
             relay_control(RELAY_OFF);
             relay_on_time_light(LIGHT_OFF);
             relay_off_time_light(LIGHT_ON);
@@ -68,23 +125,6 @@ void relay_control_timer_switch(bool timer_state)
     }
 }
 
-void relay_control_init()
-{
-    gpio_config_t io_conf = {};
-    io_conf.intr_type = GPIO_INTR_DISABLE; // disable interrupt
-    io_conf.mode = GPIO_MODE_OUTPUT;
-    io_conf.pin_bit_mask = 1ULL << RELAY_CTRL_PIN;
-    io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
-    io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
-    gpio_config(&io_conf);
-    gpio_set_level(RELAY_CTRL_PIN, RELAY_OFF);
-}
-
-void relay_control(int value)
-{
-    gpio_set_level(RELAY_CTRL_PIN, value);
-}
-
 void app_lvgl_display(void)
 {
     bsp_display_lock(0);
@@ -95,7 +135,6 @@ void app_lvgl_display(void)
 
 void app_main(void)
 {
-
     bsp_i2c_init(); // Initialize I2C (for touch)
     bsp_display_start(); // Initialize display and LVGL
     bsp_display_backlight_on(); // Turn on display backlight
@@ -106,7 +145,7 @@ void app_main(void)
     ESP_LOGI(TAG, "Relay Control Demo.");
 
     while (1) {
-        if (system_flag) {
+        if (get_system_flag()) {
             // System is running
         } else {
             ESP_LOGI (TAG, "Please pressed button to open!!!");
@@ -115,5 +154,4 @@ void app_main(void)
         ESP_LOGI (TAG, "Relay Controller Running!!!");
         vTaskDelay(200 / portTICK_PERIOD_MS);
     }
-
 }
